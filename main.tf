@@ -9,8 +9,8 @@ owners = ["amazon"]
 most_recent = true
 
 filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm*"]
+    name   = "architecture"
+    values = ["x86_64"]
   }
 
 
@@ -18,13 +18,13 @@ filter {
 
 resource "aws_instance" "myec2" {
   ami    = data.aws_ami.myami.id 
-  instance_type = "t2.nano"
+  instance_type = "t2.micro"
 
 }
 
 resource "aws_instance" "myec2-2" {
   ami    = data.aws_ami.myami.id 
-  instance_type = "t2.nano"
+  instance_type = "t2.micro"
 
  
 }
