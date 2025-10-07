@@ -52,4 +52,8 @@ resource "aws_instance" "myec2_t2" {
 resource "aws_instance" "myec2_t3" {
   ami           = data.aws_ami.t3_ami.id
   instance_type = "t3.micro"
+tags = {
+    Name        = "T2MicroInstance"
+    Environment = "Development"
+  }
 }
