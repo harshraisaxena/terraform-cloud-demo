@@ -2,8 +2,8 @@ provider "aws" {
   region = "us-east-1"
 }
 
-# Shared AMI for both t2.micro and t2.nano
-data "aws_ami" "amazon_linux_2" {
+# AMI for t2.micro (e.g., Amazon Linux 2)
+data "aws_ami" "t2_ami" {
   most_recent = true
   owners      = ["amazon"]
 
@@ -18,14 +18,30 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
+# AMI for t3.micro (e.g., Amazon Linux 2023)
+data "aws_ami" "t3_ami" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-*-x86_64"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+}
+
 # EC2 instance using t2.micro
-resource "aws_instance" "myec2_micro" {
-  ami           = data.aws_ami.amazon_linux_2.id
+resource "aws_instance" "myec2_t2" {
+  ami           = data.aws_ami.t2_ami.id
   instance_type = "t2.micro"
 }
 
-# EC2 instance using t2.nano
-resource "aws_instance" "myec2_nano" {
-  ami           = data.aws_ami.amazon_linux_2.id
-  instance_type = "t2.nano"
+# EC2 instance using t3.micro
+resource "aws_instance" "myec2_t3" {
+  ami           = data.aws_ami.t3_ami.id
+  instance_type = "t3.micro"
 }
