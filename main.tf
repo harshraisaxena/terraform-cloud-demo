@@ -1,30 +1,31 @@
 provider "aws" {
-region = "us-east-1"
-
+  region = "us-east-1"
 }
 
-data "aws_ami" "myami"{
+# Shared AMI for both t2.micro and t2.nano
+data "aws_ami" "amazon_linux_2" {
+  most_recent = true
+  owners      = ["amazon"]
 
-owners = ["amazon"]
-most_recent = true
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
 
-filter {
+  filter {
     name   = "architecture"
     values = ["x86_64"]
   }
-
-
 }
 
-resource "aws_instance" "myec2" {
-  ami    = data.aws_ami.myami.id 
+# EC2 instance using t2.micro
+resource "aws_instance" "myec2_micro" {
+  ami           = data.aws_ami.amazon_linux_2.id
   instance_type = "t2.micro"
-
 }
 
-resource "aws_instance" "myec2-2" {
-  ami    = data.aws_ami.myami.id 
-  instance_type = "t3.micro"
-
- 
+# EC2 instance using t2.nano
+resource "aws_instance" "myec2_nano" {
+  ami           = data.aws_ami.amazon_linux_2.id
+  instance_type = "t2.nano"
 }
